@@ -1,13 +1,13 @@
 {
-  "name": "filetest",
+  "name": "HTTH Cat File Server",
   "version": "1.0.0",
-  "description": "",
+  "description": "HTTH File Server",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
   },
-  "author": "",
+  "author": "Alexsandr Turkovskiy",
   "license": "ISC",
   "dependencies": {
     "express": "^4.16.3",
