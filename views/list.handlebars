@@ -1,0 +1,20 @@
+<header id="cat-header">
+<h2>HTTP Cat File Server</h2>
+<a  href="{{linkIndexBack}}"><img src='/public/img/catboxup.png' alt='folder up'><span>{{labelLinkBack}} - Up Folder<span></a>
+</header>
+<hr>
+<div id="page">
+<div id="left">
+</div>
+
+<div class="list-file">
+   <ul>
+      {{#each items}}
+        <li class="{{typeCat}}">
+           <a href="{{linkIndex}}">{{nameFile}}</a>
+        </li>
+      {{/each}}
+   </ul>
+</div>
+</div>
+<a id="fix-home" href="/"><img src="/public/img/homecat.png" alt="Home" /></a>
