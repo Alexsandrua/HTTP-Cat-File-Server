@@ -54,6 +54,8 @@ var carrentPath = castomerPathDir;
    });
 });
 
+
+
 app.get('*', (req, res, next) => { 
 var vLabelLinkBack;
    var pathUrl = req.path; 
@@ -91,6 +93,62 @@ var vLabelLinkBack;
    } else {
        next();
    }
+});
+
+function seatchCustomer(nameFileDir){
+  var resultSearch = [];
+   var tmpDir = castomerPathDir;
+   var tmpresultSearch = [];
+   tmpresultSearch.push(tmpDir);
+   var tmp2resultSearch = [];
+   
+    function readDirFolder(){
+      var files = fs.readdirSync(tmpDir);
+      for(var i in files){ 
+         var carentPathDirFile = tmpDir + '/' + files[i];
+      if(fs.statSync(carentPathDirFile).isDirectory()){
+         tmp2resultSearch.push(carentPathDirFile);
+         if(files[i].search(nameFileDir) != -1) //console.log(files[i]);
+         resultSearch.push(carentPathDirFile.slice(castomerPathDir.length, carentPathDirFile.length));
+      }else{
+         if(files[i].search(nameFileDir) != -1) //console.log(files[i]);
+         resultSearch.push(carentPathDirFile.slice(castomerPathDir.length, carentPathDirFile.length));
+      }
+   }
+   
+}
+    
+  while(1){
+   for(var diri in  tmpresultSearch){
+      tmpDir = tmpresultSearch[diri];
+      readDirFolder(); 
+   }
+      tmpresultSearch = [];
+      tmpresultSearch = tmp2resultSearch;
+      
+      tmp2resultSearch = [];
+   if(tmpresultSearch.length == 0)
+   break;
+   } 
+ 
+   return resultSearch;
+ 
+}
+
+app.post('/serch', express.urlencoded(), (req, res) => {
+   var listResultSearch = seatchCustomer(req.body.serch);
+   testJson.items = [];
+   for(i in listResultSearch){
+   if(fs.statSync(castomerPathDir + listResultSearch[i]).isDirectory())
+   testJson.items.push({linkIndex: listResultSearch[i], nameFile:listResultSearch[i], typeCat:"cat", folder: true, link: false});
+   else
+   testJson.items.push({linkIndex:listResultSearch[i], nameFile:listResultSearch[i], typeCat:"cat", folder: false, link: false});
+   }
+   res.render('list', {items:testJson.items, 
+                                          linkIndexBack:'/',
+                                          labelLinkBack:'/'
+                                           });
+  
 });
 
 var castomerPort = 3000;

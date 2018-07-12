@@ -11,6 +11,23 @@ body{
 hr{
    margin:0;
 }
+form{
+   ;
+   float:top;
+   top:10px;
+   position:fixed;
+   right:10px;
+}
+input[serch]{
+   width: 100%;
+   background-color: #4CAF50;
+   color: red;
+   padding: 14px 20px;
+   margin: 8px 0;
+   border: none;
+   border-radius: 4px;
+   cursor: pointer
+}
 #page{
   overflow:hidden; 
 }
