@@ -1,7 +1,7 @@
 HTTP-Cat-File-Server
 
 install
-npm init
+npm install
 
 config
  file config cat.conf
