@@ -1,10 +1,10 @@
 var fs = require('fs'),
     path = require('path'),
     express = require('express'),
-    handlebars = require('express-handlebars');////ssss
-    
+    handlebars = require('express-handlebars');////test
+
 var helpers = require('./lib/helpers');
-    
+
 var app = express();
 
 app.use('/public', express.static(path.join(__dirname + '/public')));
@@ -22,7 +22,7 @@ app.set('view engine', 'handlebars');
 
 // json
 var pasFromJson = JSON.parse(fs.readFileSync(path.join(__dirname, 'cat.conf')));
- 
+
 
 //app.use(express.static('/home/js/webdev/fs/public' + '/public'));
 
@@ -38,7 +38,7 @@ castomerPathDir = pasFromJson.path;
 
 
 app.get('/', function(req, res){
-var carrentPath = castomerPathDir; 
+var carrentPath = castomerPathDir;
    testJson.items = [];
    fs.readdir(carrentPath, (err, files) => {
    for(var i = 0; i < files.length; i++){
@@ -46,7 +46,7 @@ var carrentPath = castomerPathDir;
         testJson.items.push({linkIndex:'/'+ files[i], nameFile:files[i], typeCat:"catbox", folder: true, link: false});
      else if(fs.statSync(carrentPath + '/' + files[i]).isFile())
         testJson.items.push({linkIndex:'/'+ files[i], nameFile:files[i], typeCat:"cat",folder: false, link: false});
-     if(i == files.length - 1) res.render('list', {items:testJson.items, 
+     if(i == files.length - 1) res.render('list', {items:testJson.items,
                                           linkIndexBack:'/',
                                           labelLinkBack:'/'
                                            });
@@ -56,20 +56,20 @@ var carrentPath = castomerPathDir;
 
 
 
-app.get('*', (req, res, next) => { 
+app.get('*', (req, res, next) => {
 var vLabelLinkBack;
-   var pathUrl = req.path; 
+   var pathUrl = req.path;
    if(pathUrl !== '/') {
-     testJson.items = [];  
+     testJson.items = [];
      var fileDirName = req.originalUrl.replace(/%20/g, "\ ");
      if(fs.statSync(castomerPathDir +  fileDirName).isFile()){ console.log('=====' + req.originalUrl.replace(/%20/g, "\ "))
      res.download(path.join(castomerPathDir, fileDirName), fileDirName, err => {
-        if (err) console.log(err); 
+        if (err) console.log(err);
     });
     }
    if(fs.statSync(castomerPathDir +  fileDirName).isDirectory()){
     testJson.items = [];
-    pathTmp = castomerPathDir + fileDirName; 
+    pathTmp = castomerPathDir + fileDirName;
     if(fileDirName.indexOf("/") == fileDirName.lastIndexOf("/"))
      vLabelLinkBack = fileDirName.slice(0, 1);
     else
@@ -78,11 +78,11 @@ var vLabelLinkBack;
     if(files.length != 0){
     for(var i = 0; i < files.length; i++){
    var tmpPathDirIsNotFound = pathTmp.slice(castomerPathDir.length, pathTmp.length);
-     if(fs.statSync(pathTmp + '/' + files[i]).isDirectory()){ 
+     if(fs.statSync(pathTmp + '/' + files[i]).isDirectory()){
         testJson.items.push({linkIndex:tmpPathDirIsNotFound + '/'+ files[i], nameFile:files[i], typeCat:"catbox", folder: true, link: false});}
      else if(fs.statSync(pathTmp + '/' + files[i]).isFile())
         testJson.items.push({linkIndex:tmpPathDirIsNotFound + '/'+ files[i], nameFile:files[i], typeCat:"cat", folder: false, link: false});
-     if(i == files.length - 1) res.render('list', {items:testJson.items, 
+     if(i == files.length - 1) res.render('list', {items:testJson.items,
                                           linkIndexBack: vLabelLinkBack,
                                           labelLinkBack: vLabelLinkBack
                                            });
@@ -101,10 +101,10 @@ function seatchCustomer(nameFileDir){
    var tmpresultSearch = [];
    tmpresultSearch.push(tmpDir);
    var tmp2resultSearch = [];
-   
+
     function readDirFolder(){
       var files = fs.readdirSync(tmpDir);
-      for(var i in files){ 
+      for(var i in files){
          var carentPathDirFile = tmpDir + '/' + files[i];
       if(fs.statSync(carentPathDirFile).isDirectory()){
          tmp2resultSearch.push(carentPathDirFile);
@@ -115,24 +115,24 @@ function seatchCustomer(nameFileDir){
          resultSearch.push(carentPathDirFile.slice(castomerPathDir.length, carentPathDirFile.length));
       }
    }
-   
+
 }
-    
+
   while(1){
    for(var diri in  tmpresultSearch){
       tmpDir = tmpresultSearch[diri];
-      readDirFolder(); 
+      readDirFolder();
    }
       tmpresultSearch = [];
       tmpresultSearch = tmp2resultSearch;
-      
+
       tmp2resultSearch = [];
    if(tmpresultSearch.length == 0)
    break;
-   } 
- 
+   }
+
    return resultSearch;
- 
+
 }
 
 app.post('/serch', express.urlencoded(), (req, res) => {
@@ -144,11 +144,11 @@ app.post('/serch', express.urlencoded(), (req, res) => {
    else
    testJson.items.push({linkIndex:listResultSearch[i], nameFile:listResultSearch[i], typeCat:"cat", folder: false, link: false});
    }
-   res.render('list', {items:testJson.items, 
+   res.render('list', {items:testJson.items,
                                           linkIndexBack:'/',
                                           labelLinkBack:'/'
                                            });
-  
+
 });
 
 var castomerPort = 3000;
